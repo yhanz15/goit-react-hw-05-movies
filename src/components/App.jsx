@@ -1,16 +1,32 @@
+import {lazy} from 'react'
+import { Route, Routes } from "react-router-dom";
+import { Layout } from "./Layout/Layout";
+
+
+
+const Home = lazy(() => import('../pages/Home/Home'));
+const SearchMovie = lazy(() => import('../pages/Search/Search'));
+const MoviesDetails = lazy(() => import('../pages/MovieDetails/MoviesDetails'));
+const Cast = lazy(() => import('./Cast/Cast'));
+const Reviews = lazy(() => import('./Reviews/Reviews'));
+const NotFound = lazy(() => import('../pages/NotFound'));
+
 export const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <Routes>
+      <Route path="/" element={ <Layout /> }>
+        <Route index element={ <Home /> } />
+        <Route path=":movieId" element={ <MoviesDetails /> }>
+          <Route path="cast" element={ <Cast/> } />
+          <Route path="reviews" element={ <Reviews />} />
+        </Route>
+        <Route path="movies" element={ <SearchMovie /> } />
+        <Route path="movies/:movieId" element={ <MoviesDetails /> } >
+          <Route path="cast" element={ <Cast/> } />
+          <Route path="reviews" element={ <Reviews />} />
+        </Route>
+      </Route>
+      <Route path='*' element={ <NotFound/>} />
+    </Routes>
   );
 };
